@@ -26,6 +26,7 @@ app.use(logger('dev'));
 // for parsing application/json
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
+// querystring library (when false) or the qs library (when true)
 app.use(bodyParser.urlencoded({ extended: false }));
 // 注意这里使用 cookie-parser 中间件，
 // 如果在 res.cookie 设置 signed:true，在这里必需传人一个 secret 用于签名
