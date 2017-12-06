@@ -1,9 +1,9 @@
 {
   "apps" : [{
     "name" : "xx-express-app",  //应用名称(使用 pm2 ls 时显示)
-    "script": "./src/server.js", //程序入口
+    "script": "./server/server.js", //程序入口
     "cwd": "./",             //根目录
-    "watch":["src"],//需要监控的目录
+    "watch":["server"],//需要监控的目录
     "error_file":"./pm2-logs/pm2-err.log",//错误输出日志
     "out_file":"./pm2-logs/pm2-out.log",  //日志
     "log_date_format":"YY-MM-DD HH:mm:ss.S" //日期格式

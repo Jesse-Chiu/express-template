@@ -7,8 +7,8 @@ let router = express.Router();
 /**
  * form-data post demo
  */
-router.get('/form-data-test', function(req, res) {
-	console.log(`\nget -> /form-data-test -> body: ${JSON.stringify(req.query)}`);
+router.get('/form-data-demo', function(req, res) {
+	console.log(`\nget -> /form-data-demo -> body: ${JSON.stringify(req.query)}`);
 	res.send(`<form method="post" enctype="multipart/form-data">
 		<p>Title: <input type="text" name="title" /></p>
 		<p>Photo: <input type="file" name="photo" /></p>
@@ -33,12 +33,11 @@ let upload = multer({
 	}
 });
 
-router.post('/form-data-test', upload.single('photo'), function(req, res) {
-	console.log(`\npost -> /form-data-test -> req.file`, req.file);
-	console.log(`\npost -> /form-data-test -> body: ${JSON.stringify(req.body)}`);
+router.post('/form-data-demo', upload.single('photo'), function(req, res) {
+	console.log(`\npost -> /form-data-demo -> req.file`, req.file);
+	console.log(`\npost -> /form-data-demo -> body: ${JSON.stringify(req.body)}`);
 	res.send('good job!!!');
 });
-
 
 //////////////////////////////////////
 module.exports = router;

@@ -1,3 +1,3 @@
 {
-  "ignore": ["node_modules/*","pm2-logs/*","uploads/*"]
+  "ignore": ["node_modules/*","pm2-logs/*","uploads/*","temp/*"]
 }
