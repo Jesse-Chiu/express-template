@@ -7,7 +7,7 @@ let config = {
 
 
 if(process.env.NODE_ENV === 'development'){
-	config.mongodbUrl = 'mongodb://127.0.0.1:27017';
+	config.mongodbUrl = 'mongodb://kuku:kuku@127.0.0.1:27017/kuku';
 }else{
 
 }

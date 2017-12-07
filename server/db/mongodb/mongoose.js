@@ -17,3 +17,9 @@ db.once('open', function() {
 
 //////////////////////////////////////////////////////////
 module.exports = mongoose;
+
+db.createUser({
+	user: "kuku", // 用户名
+	pwd:"kuku",// 密码
+	roles:[{role:"readWrite",db:"kuku"}] //超级管理员
+})
