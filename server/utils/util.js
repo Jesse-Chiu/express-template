@@ -31,7 +31,7 @@ function getRandomStr(num, type) {
   for (index = 0; index < num; index++) {
     result += sourceStr.charAt(Math.floor(Math.random() * strLength));
   }
-  console.log(`getRandomStr(): num:${num} result:${result}`);
+  // console.log(`getRandomStr(): num:${num} result:${result}`);
   return result;
 }
 

@@ -20,14 +20,19 @@ function initDb(){
 function initUsersDb(){
 	if(process.env.NODE_ENV === 'development'){
 		(async function(){
-			let usersDb = await userDb.getAllUsers();
-			if(usersDb.length > 5){
+			let usersDb = await userDb.getUsersCount();
+			if(usersDb > 5){
 				return;
 			}else{
 				for(let i=0;i<10;i++){
 					await userDb.addUser({
 						userId: util.getRandomStr(4),
-						password: util.getRandomStr(8,'Number')
+						password: util.getRandomStr(8,'Number'),
+						info:{
+							sex: Math.round(Math.random()),
+							age:Number(util.getRandomStr(2,'Number')),
+							email:`${util.getRandomStr(4)}@qq.com`
+						}
 					})
 				}
 			}

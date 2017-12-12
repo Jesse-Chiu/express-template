@@ -19,8 +19,8 @@
 - 成功 返回数据
 ```js
 {
-	"total": 20,
-	"count": 40,
+	"total": 40,
+	"count": 20,
 	"start": 0,
 	"data": [{
 				"_id": "5a27dba65df7de178c88caa2",
@@ -41,7 +41,7 @@ $.ajax({
     type: 'GET',
     url: url + 'users/',
     data: {
-        count:40, // 必填
+        count:20, // 必填
         start:0 // 必填
     },
     success: function (data) {

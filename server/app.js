@@ -65,7 +65,7 @@ app.use(cors());
 
 //---------------路由配置文件------------------
 app.use('/', require('./routes/index'));
-app.use('/demo', require('./routes/demo'));
+app.use('/', require('./routes/demo'));
 app.use('/', require('./routes/users'));
 
 

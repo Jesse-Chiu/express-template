@@ -12,11 +12,23 @@ let util = require('../utils/util.js');
  * @return {[type]}       [description]
  */
 router.get('/users', function(req, res, next) {
-	userDb.getAllUsers()
-		.then((result) => {
-			res.status(200).json(result);
-		})
-		.catch((error) => {
+	let configObj = {
+		start: req.query.start,
+		count: req.query.count
+	}
+	let asyncFun = async function(){
+		let usersData = await userDb.getUsers(configObj);
+		let totalUsersNum = await userDb.getUsersCount();
+		let sendData = {
+			total: totalUsersNum,
+			start: configObj.start,
+			count: configObj.count,
+			data: usersData
+		}
+		res.status(200).json(sendData);
+	}
+	asyncFun()
+	.catch((error) => {
 			console.error(error);
 			res.status(404).send({
 				error: 'NOT FOUND'
@@ -87,7 +99,7 @@ router.delete('/users/:userId', (req, res, next) => {
 	 * @return {[type]}                   [description]
 	 */
 router.put('/users/:userId', (req, res, next) => {
-		console.log(`put -> /user/:userId -> ${JSON.stringify(req.body)}`);
+		// console.log(`put -> /user/:userId -> ${JSON.stringify(req.body)}`);
 		userDb.updateUser(req.body)
 			.then(() => {
 				return userDb.getUser(req.body.userId)
@@ -96,9 +108,8 @@ router.put('/users/:userId', (req, res, next) => {
 				res.status(201).send(result[0]);
 			})
 			.catch((error) => {
-				res.status(500).json({
-					error: 'INTERNAL SERVER ERROR'
-				})
+				// 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。
+				res.status(422).send(error)
 			})
 	})
 	/**
@@ -117,9 +128,8 @@ router.post('/users', (req, res, next) => {
 			res.status(201).send(result[0])
 		})
 		.catch((error) => {
-			res.status(500).json({
-				error: 'INTERNAL SERVER ERROR'
-			})
+			// 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。
+			res.status(422).send(error)
 		})
 })
 
