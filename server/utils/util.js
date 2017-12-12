@@ -1,6 +1,7 @@
 /**
  * 工具函数
  */
+const crypto = require("crypto");
 
 /**
  * 创建一个错误异常信息
@@ -35,8 +36,21 @@ function getRandomStr(num, type) {
   return result;
 }
 
+/**
+ * 获取 sha256 hash 值
+ * @param  {[type]} str [description]
+ * @return {[type]}     [description]
+ */
+function getSha256(str){
+  let sha256 = crypto.createHash("sha256");
+  let result = sha256.update(str).digest("hex");
+  console.log(`getSha256() :${result}`);
+  return result;
+}
+
 /////////////////////////////////////////
 module.exports = {
 	createError,  // 创建一个错误异常
 	getRandomStr, // 获取指定长度随机字符串 
+  getSha256, // 获取 sha256 hash 加密值
 }

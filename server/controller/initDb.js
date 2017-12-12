@@ -24,10 +24,11 @@ function initUsersDb(){
 			if(usersDb > 5){
 				return;
 			}else{
+				await addUser({userId:'kuku',password:'1234',info:{age:88}});
 				for(let i=0;i<10;i++){
 					await userDb.addUser({
 						userId: util.getRandomStr(4),
-						password: util.getRandomStr(8,'Number'),
+						password: util.getSha256(util.getRandomStr(8,'Number')),
 						info:{
 							sex: Math.round(Math.random()),
 							age:Number(util.getRandomStr(2,'Number')),

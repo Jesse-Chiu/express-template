@@ -3,6 +3,7 @@
  * users 用户数据表和操作函数
  */
 const mongoose = require('./mongoose.js');
+const util = require('../../utils/util.js');
 
 
 // Schema 结构
@@ -37,7 +38,9 @@ let usersModel = mongoose.model('users', usersSchema);
  * @param {[type]} marksItem   [description]
  */
 function addUser(configObj) {
+  configObj.password = util.getSha256(configObj.password);
   console.log(`addUser(${JSON.stringify(configObj)})`);
+
   let newUser = new usersModel(configObj);
   return new Promise((resolve, reject) => {
     newUser.save(function(error) {
@@ -80,16 +83,14 @@ function deleteUser(userId) {
  * @return {[type]}        [description]
  */
 function updateUser(configObj) {
-  console.log(`updateUser(${JSON.stringify(configObj)})`);
   let conditions = {
     userId: configObj.userId
   };
+  configObj.password && (configObj.password = util.getSha256(configObj.password));
+  console.log(`updateUser(${JSON.stringify(configObj)})`);
   let update = {
     // 使用 $set 操作符可以只更新存在的数据
-    $set: {
-      password: configObj.password,
-      info: configObj.info
-    }
+    $set: configObj
   };
   let options = {
     multi: false, // 是否更新所有找到的数据
@@ -119,6 +120,7 @@ function getUser(userId) {
     userId
   };
   return new Promise((resolve, reject) => {
+    // 如果使用 findOne 返回的是一个对象，不是数组
     usersModel.findOne(conditions, (error, result) => {
       if (error) {
         console.log(`getUser() error: ${JSON.stringify(error)}`);
@@ -180,8 +182,7 @@ function getUsersCount() {
   // await getUsers();
   // await getUsers({start:1,count:2});
   // await updateUser({userId:'kuku',password:'8888'});
-  // await getUser('kuku');
-
+  await getUser('kuku');
   // await deleteUser('kuku')
 })()
 //////////////////////////////////////////////////////////////////

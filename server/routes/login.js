@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
-const crypto = require("crypto");
 const userDb = require('../db/mongodb/users.js');
+const util = require('../utils/util.js');
 
 // 默认首页
 router.get('/', function(req, res) {
@@ -57,8 +57,7 @@ router.post('/login', (req, res, next) => {
 	let password = req.body.password;
 	let asyncFun = async function() {
 		let user = await userDb.getUser(userId);
-		// TODO hash
-		if (user.password === password) {
+		if (user.password === util.getSha256(password)) {
 			// Regenerate session when signing in
 			// to prevent fixation
 			req.session.regenerate(function() {

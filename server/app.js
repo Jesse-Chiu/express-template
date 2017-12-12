@@ -81,6 +81,10 @@ app.use((req, res, next) => {
   if (req.session.isLogin) {
     return next();
   }
+  console.warn(`401 Unauthorized`);
+  if(process.env.NODE_ENV === 'development'){
+    return next();
+  }
   // 401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）
   res.status(401).send({code:401,error:'Unauthorized'});
 })

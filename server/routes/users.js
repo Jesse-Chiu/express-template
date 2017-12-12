@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
 let userDb = require('../db/mongodb/users.js');
 let util = require('../utils/util.js');
 
@@ -47,8 +46,8 @@ router.param('userId', function(req, res, next, userId) {
 	// console.log(`param -> userId: ${userId}`);
 	userDb.getUser(userId)
 		.then((result) => {
-			if (result.length) {
-				req.user = result[0];
+			if (result.userId) {
+				req.user = result;
 				next();
 			} else {
 				res.status(404).send({
@@ -105,7 +104,7 @@ router.put('/users/:userId', (req, res, next) => {
 				return userDb.getUser(req.body.userId)
 			})
 			.then((result) => {
-				res.status(201).send(result[0]);
+				res.status(201).send(result);
 			})
 			.catch((error) => {
 				// 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。
@@ -125,7 +124,7 @@ router.post('/users', (req, res, next) => {
 			return userDb.getUser(req.body.userId)
 		})
 		.then((result) => {
-			res.status(201).send(result[0])
+			res.status(201).send(result)
 		})
 		.catch((error) => {
 			// 422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。
