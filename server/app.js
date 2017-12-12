@@ -33,14 +33,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
 // querystring library (when false) or the qs library (when true)
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 // 注意这里使用 cookie-parser 中间件，
 // 如果在 res.cookie 设置 signed:true，在这里必需传人一个 secret 用于签名
 app.use(cookieParser('3d48ed43942bjesse95cf34b1419a2fe'));
 // 设置静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
 // 可以配置虚拟路径
-app.use('/xxx/static',express.static(path.join(__dirname, 'public')));
+app.use('/xxx/static', express.static(path.join(__dirname, 'public')));
 
 // 设置 session
 app.use(session({
@@ -48,7 +50,9 @@ app.use(session({
   saveUninitialized: false, // don't create session until something stored
   // cookie: {maxAge:  1000*60*60*24*7},// 设置有效时间 7 天
   // store: new RedisStore, // session 保存在 redis 中
-  store: new MongoStore({url: config.mongodbUrl}),// session 保存在 mongo 中
+  store: new MongoStore({
+    url: config.mongodbUrl
+  }), // session 保存在 mongo 中
   secret: 'jesse chiu' // 只在 https 时有用
 }));
 
@@ -56,17 +60,32 @@ app.use(session({
 app.use(cors());
 // 或者使用原生配置
 // app.use(function(req, res, next) {
-// 	res.header("Access-Control-Allow-Origin", "*");
-// 	res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-// 	// res.header("Access-Control-Allow-Headers", "jesse");
-// 	// res.header("Access-Control-Allow-Origin", "http://test.jessechiu.com");
-// 	next();
+//  res.header("Access-Control-Allow-Origin", "*");
+//  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+//  // res.header("Access-Control-Allow-Headers", "jesse");
+//  // res.header("Access-Control-Allow-Origin", "http://test.jessechiu.com");
+//  next();
 // });
 
+
 //---------------路由配置文件------------------
-app.use('/', require('./routes/index'));
-app.use('/', require('./routes/demo'));
+app.use('/', require('./routes/login'));
+/**
+ * 权限验证，确保只用登入成功后才能操作后面的接口
+ * 注意: 位置必须其它接口之前，登入接口之后
+ * @param  {[type]} (req, res,          next [description]
+ * @return {[type]}       [description]
+ */
+app.use((req, res, next) => {
+  console.log(`app.use() ${req.session.isLogin}`);
+  if (req.session.isLogin) {
+    return next();
+  }
+  // 401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）
+  res.status(401).send({code:401,error:'Unauthorized'});
+})
 app.use('/', require('./routes/users'));
+app.use('/', require('./routes/demo'));
 
 
 //---------------错误处理-----------------------
@@ -85,7 +104,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error',{error:JSON.stringify(err)});
+  res.render('error', {
+    error: JSON.stringify(err)
+  });
 });
 
 module.exports = app;
