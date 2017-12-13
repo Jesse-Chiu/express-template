@@ -182,7 +182,7 @@ function getUsersCount() {
   // await getUsers();
   // await getUsers({start:1,count:2});
   // await updateUser({userId:'kuku',password:'8888'});
-  await getUser('kuku');
+  // await getUser('kuku');
   // await deleteUser('kuku')
 })()
 //////////////////////////////////////////////////////////////////

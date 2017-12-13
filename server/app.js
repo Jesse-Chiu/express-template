@@ -7,8 +7,7 @@ let bodyParser = require('body-parser');
 let session = require('express-session');
 let cors = require('cors');
 let config = require('./config/config.js');
-let initDb = require('./controller/initDb.js');
-initDb.initUsersDb();
+require('./controller/init.js').init();
 
 // pass the express to the connect redis module
 // allowing it to inherit from session.Store
