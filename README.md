@@ -8,7 +8,7 @@
 - 会自动初始化 11 用户数据
 
 
-## 使用到的组件
+## 工程中包含的组件
 - [multer](https://www.npmjs.com/package/multer) 文件上传插件
 - [express-session](https://www.npmjs.com/package/express-session) session 插件
 - [ejs](https://www.npmjs.com/package/ejs) ejs 模板
@@ -20,3 +20,11 @@
 - [mongoose]() 在 mongodb 基础上封装一层更易于操作的接口
 - [cors](https://www.npmjs.com/package/cors#configuration-options) 用于配置 cors 跨域
 - [later](https://www.npmjs.com/package/later) 定时任务解决方案
+- [passport]() oAuth 中间件
+- [passport-local] 结合 passport 中间件使用，用于本地用户名和密码登录
+- [passport-github] 结合 passport 中间件使用，用于 Github 账号登录
+- [passport-linkedin] 结合 passport 中间件使用，用于 LinkedIn 账号登录
+
+
+## 资源
+- [LinkedIn 授权应用创建](https://www.linkedin.com/developer/apps)

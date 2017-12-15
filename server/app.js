@@ -8,6 +8,7 @@ let session = require('express-session');
 let cors = require('cors');
 let config = require('./config/config.js');
 require('./controller/init.js').init();
+let passport = require('passport');
 
 // pass the express to the connect redis module
 // allowing it to inherit from session.Store
@@ -51,7 +52,7 @@ app.use(session({
   // store: new RedisStore, // session 保存在 redis 中
   store: new MongoStore({
     url: config.mongodbUrl
-  }), // session 保存在 mongo 中
+  }), // session 保存在 mongodb 中
   secret: 'jesse chiu' // 只在 https 时有用
 }));
 
@@ -66,9 +67,18 @@ app.use(cors());
 //  next();
 // });
 
+// 配置 passport 中间件,依赖于 express-session
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 //---------------路由配置文件------------------
-app.use('/', require('./routes/login'));
+//使用 passport 方式登入
+// app.use('/', require('./routes/login-passport-github'));
+app.use('/', require('./routes/login-passport'));
+// 使用普通方式登入
+// app.use('/', require('./routes/login'));
+
 /**
  * 权限验证，确保只用登入成功后才能操作后面的接口
  * 注意: 位置必须其它接口之前，登入接口之后
@@ -77,7 +87,7 @@ app.use('/', require('./routes/login'));
  */
 app.use((req, res, next) => {
   console.log(`app.use() ${req.session.isLogin}`);
-  if (req.session.isLogin) {
+  if (req.session.isLogin || req.isAuthenticated()) {
     return next();
   }
   console.warn(`401 Unauthorized`);

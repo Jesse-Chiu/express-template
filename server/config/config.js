@@ -2,7 +2,7 @@
 let packageJson = require('../../package.json');
 // 全局配置信息
 let config = {
-		version: packageJson.version
+		version: packageJson.version,
 };
 
 

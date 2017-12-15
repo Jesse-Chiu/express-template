@@ -3,6 +3,7 @@
  */
 const crypto = require("crypto");
 const later = require('later');
+const nodemailer = require('nodemailer');
 
 /**
  * 创建一个错误异常信息
@@ -79,10 +80,69 @@ function executeSchedule(schedule,type,executeFun){
     }, schedule);
   }
 }
+
+/**
+ * 发送邮件(目前暂时默认使用 qq smtp 作为邮件服务器)
+ * @param  {[type]} configObj [description]
+ * {
+ *      senderOptions:{
+ *          user: xxxx@qq.com,
+ *          password: xxxxx
+ *      },
+ *      mailOptions:{
+ *          to:['xxx@qq.com','ooo@qq.com'],
+ *          subject:'xxxx',
+ *          text:'xxxx',
+ *          html:'',
+ *          attachments:[{
+ *              
+ *          }]
+ *      }
+ * }
+ * @return {[type]}           [description]
+ */
+function sendEmail(configObj) {
+    console.log(`sendEmail: ${JSON.stringify(configObj)}`);
+    return new Promise((resolve, reject) => {
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: 'smtp.qq.com',
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: configObj.senderOptions.user, // 发送邮箱的地址
+                pass: configObj.senderOptions.password // 发送邮箱密码
+            }
+        });
+        // setup email data with unicode symbols
+        let mailOptions = {
+            from: configObj.senderOptions.user, // sender address
+            to: configObj.mailOptions.to.join(','), // list of receivers
+            subject: configObj.mailOptions.subject, // Subject line
+            text: configObj.mailOptions.text, // plain text body
+            // 当有 html 内容时,text 内容无效
+            html: configObj.mailOptions.html, // html body
+            attachments: configObj.mailOptions.attachments
+        };
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(`sendMail fail: ${JSON.stringify(error)}`);
+                transporter.close();
+                return reject(JSON.stringify(error));
+            }
+            console.log(`sendMail success: ${JSON.stringify(info)}`);
+            transporter.close();
+            resolve(info);
+        });
+    });
+}
 /////////////////////////////////////////
 module.exports = {
 	createError,  // 创建一个错误异常
 	getRandomStr, // 获取指定长度随机字符串 
   getSha256, // 获取 sha256 hash 加密值
   executeSchedule,// 设置计划执行表
+  sendEmail,// 发送邮件
 }

@@ -1,3 +1,8 @@
+'use strict'
+/**
+ * 使用普通用户密码登入方式
+ */
+
 let express = require('express');
 let router = express.Router();
 const userDb = require('../db/mongodb/users.js');
@@ -53,7 +58,7 @@ router.get('/login', function(req, res, next) {
  */
 router.post('/login', (req, res, next) => {
 	console.log(`/lgoin post: ${JSON.stringify(req.body)}`);
-	let userId = req.body.userId;
+	let userId = req.body.username;
 	let password = req.body.password;
 	let asyncFun = async function() {
 		let user = await userDb.getUser(userId);
@@ -68,7 +73,7 @@ router.post('/login', (req, res, next) => {
 				req.session.user = user;
 				res.render('index', {
 					configObj: {
-						userId: userId,
+						username: userId,
 						currentTime: new Date().toLocaleString()
 					}
 				});

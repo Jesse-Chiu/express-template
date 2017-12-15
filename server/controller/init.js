@@ -17,6 +17,7 @@ function init(){
 	initDb.initUsersDb();
 	if(process.env.NODE_ENV === 'development'){
 		require('../test/later-test.js');
+		require('../test/mailer-test.js');
 	}
 }
 
