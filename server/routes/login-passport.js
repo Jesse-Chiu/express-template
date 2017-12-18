@@ -100,8 +100,8 @@ function isLoggedIn(req, res, next) {
 // 配置使用 github 方式登入
 passport.use(new GithubStrategy({
 	// 参考 https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
-	clientID: "badd6de6255abda00790",
-	clientSecret: "86cfec96d9370f6f3f22510a9cd7c05c70932ae3",
+	clientID: "xxxx",
+	clientSecret: "xxxx",
 	// 认证号回调地址
 	callbackURL: "http://localhost/auth/github/callback"
 }, function(accessToken, refreshToken, profile, done) {
@@ -123,8 +123,8 @@ router.get("/auth/github", passport.authenticate("github", {
 //------------------------------------------------------------
 // 使用 linkedin 方式登入
 passport.use(new LinkedinStrategy({
-    consumerKey: "78z1m6c14qmwso",
-    consumerSecret: "ErbqsdtiaCNfJjWz",
+    consumerKey: "xxxx",
+    consumerSecret: "xxxxx",
     callbackURL: "http://localhost/auth/linkedin/callback",
     userAgent: 'localhost'
 },function(accessToken, refreshToken, profile, done) {

@@ -11,7 +11,7 @@ let emailObj = {
         password: `xxxxx`
     },
     mailOptions: {
-        to: ['jessechiu@foxmail.com', '48593811@qq.com'],
+        to: ['jessechiu@foxmail.com', 'xxxxx@qq.com'],
         subject: 'Hello NodeMailer',
         text: 'One today is worth two tomorrows!',
         html: '<p>One today is worth two tomorrows!</p><p> <img src="cid:001"></p>',

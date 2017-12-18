@@ -74,7 +74,6 @@ app.use(passport.session());
 
 //---------------路由配置文件------------------
 //使用 passport 方式登入
-// app.use('/', require('./routes/login-passport-github'));
 app.use('/', require('./routes/login-passport'));
 // 使用普通方式登入
 // app.use('/', require('./routes/login'));
